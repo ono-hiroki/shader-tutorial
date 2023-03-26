@@ -2,8 +2,12 @@ uniform mat4 projectionMatrix; // projection matrixは、カメラの視野角�
 uniform mat4 viewMatrix; // view matrixは、カメラの位置、回転、スケールを表す行列
 uniform mat4 modelMatrix; // model matrixは、モデルの位置、回転、スケールを表す行列
 
-attribute vec3 position;
+attribute vec3 position; // 頂点の位置
 
 void main() {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    modelPosition.x += 0.5;
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 projectionPosition = projectionMatrix * viewPosition;
+    gl_Position = projectionPosition;
 }
